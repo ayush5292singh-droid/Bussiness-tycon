@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Empire Wars</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="setup" class="screen">
+  <div class="setup-box">
+    <div class="brand">EMPIRE<span>WARS</span></div>
+    <p class="subtitle">Build. Compete. Dominate.</p>
+
+    <input id="playerName" placeholder="Your name">
+    <input id="companyName" placeholder="Your company name">
+
+    <select id="industry">
+      <option>Technology</option>
+      <option>Automotive</option>
+      <option>Energy</option>
+      <option>Retail</option>
+      <option>Gaming</option>
+      <option>Food</option>
+    </select>
+
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="normal" selected>Normal</option>
+      <option value="hard">Hard</option>
+    </select>
+
+    <button onclick="startGame()">CREATE COMPANY</button>
+  </div>
+</div>
+
+<div id="game" class="hidden">
+
+<header>
+  <div class="brand small-brand">EW<span>®</span></div>
+
+  <div class="clock">
+    <div id="time">08:00</div>
+    <div id="period">DAY</div>
+  </div>
+
+  <div class="header-right">
+    <div>
+      <small>CASH</small>
+      <b id="cash">$10,000</b>
+    </div>
+    <button onclick="openSettings()">⚙</button>
+  </div>
+</header>
+
+<div id="dangerBar">
+  <span id="dangerText">COMPANY STABLE</span>
+  <span id="riskText">RISK 0%</span>
+</div>
+
+<section class="hud">
+  <div>
+    <small>COMPANY</small>
+    <b id="companyTitle">---</b>
+  </div>
+
+  <div>
+    <small>LEVEL</small>
+    <b id="level">1</b>
+  </div>
+
+  <div>
+    <small>VALUE</small>
+    <b id="value">$10,000</b>
+  </div>
+
+  <div>
+    <small>REPUTATION</small>
+    <b id="reputation">50</b>
+  </div>
+
+  <div>
+    <small>PROFIT</small>
+    <b id="profit">$0</b>
+  </div>
+</section>
+
+<nav>
+  <button class="active" onclick="panel('hq',this)">HQ</button>
+  <button onclick="panel('business',this)">BUSINESS</button>
+  <button onclick="panel('competition',this)">COMPETITION</button>
+  <button onclick="panel('stocks',this)">STOCKS</button>
+  <button onclick="panel('bank',this)">BANK</button>
+  <button onclick="panel('employees',this)">TEAM</button>
+  <button onclick="panel('market',this)">MARKET</button>
+</nav>
+
+<main>
+
+<!-- HQ -->
+
+<section id="hq" class="page active">
+
+  <div class="hero">
+    <div>
+      <small class="cyan">COMMAND CENTER</small>
+      <h1 id="welcome">Welcome</h1>
+      <p id="industryText">Your empire starts here.</p>
+    </div>
+
+    <div class="rank">
+      <span id="rankName">STARTUP</span>
+      <div class="xp">
+        <div id="xpBar"></div>
+      </div>
+      <small id="xpText">0 / 100 XP</small>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="card performance">
+      <h3>COMPANY PERFORMANCE</h3>
+
+      <div class="metric">
+        <span>Revenue</span>
+        <b id="rev">0</b>
+      </div>
+
+      <div class="metric">
+        <span>Expenses</span>
+        <b id="exp">0</b>
+      </div>
+
+      <div class="metric">
+        <span>Employees</span>
+        <b id="emp">0</b>
+      </div>
+
+      <div class="metric">
+        <span>Debt</span>
+        <b id="debt">0</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>COMPETITOR ALERT</h3>
+      <div id="competitorAlert">
+        Market intelligence loading...
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>LIVE NEWS</h3>
+      <div id="news">No breaking news.</div>
+    </div>
+
+    <div class="card">
+      <h3>ACHIEVEMENTS</h3>
+      <div id="achievements"></div>
+    </div>
+
+  </div>
+
+  <div class="action-zone">
+
+    <button class="big-action" onclick="businessAction()">
+      RUN BUSINESS
+    </button>
+
+    <button onclick="restock()">RESTOCK</button>
+    <button onclick="marketing()">MARKETING</button>
+    <button onclick="research()">RESEARCH</button>
+
+  </div>
+
+</section>
+
+<!-- BUSINESS -->
+
+<section id="business" class="page">
+
+  <div class="title">
+    <small class="cyan">CORPORATE DEVELOPMENT</small>
+    <h2>BUSINESS UPGRADES</h2>
+  </div>
+
+  <div class="upgrade-grid">
+
+    <div class="upgrade">
+      <div class="icon">🏭</div>
+      <h3>Production</h3>
+      <p>Increase your company's revenue capacity.</p>
+      <strong>LEVEL <span id="productionLvl">1</span></strong>
+      <button onclick="upgrade('production')">
+        UPGRADE $<span id="productionCost">2,000</span>
+      </button>
+    </div>
+
+    <div class="upgrade">
+      <div class="icon">📡</div>
+      <h3>Marketing</h3>
+      <p>Increase demand and reputation.</p>
+      <strong>LEVEL <span id="marketingLvl">1</span></strong>
+      <button onclick="upgrade('marketing')">
+        UPGRADE $<span id="marketingCost">1,500</span>
+      </button>
+    </div>
+
+    <div class="upgrade">
+      <div class="icon">🧠</div>
+      <h3>Research</h3>
+      <p>Develop better technology.</p>
+      <strong>LEVEL <span id="researchLvl">1</span></strong>
+      <button onclick="upgrade('research')">
+        UPGRADE $<span id="researchCost">2,500</span>
+      </button>
+    </div>
+
+    <div class="upgrade">
+      <div class="icon">🏢</div>
+      <h3>Headquarters</h3>
+      <p>Increase company capacity.</p>
+      <strong>LEVEL <span id="hqLvl">1</span></strong>
+      <button onclick="upgrade('hq')">
+        UPGRADE $<span id="hqCost">3,000</span>
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- COMPETITION -->
+
+<section id="competition" class="page">
+
+  <div class="title">
+    <small class="cyan">CORPORATE WAR</small>
+    <h2>COMPETITORS</h2>
+  </div>
+
+  <div id="competitors"></div>
+
+</section>
+
+<!-- STOCKS -->
+
+<section id="stocks" class="page">
+
+  <div class="title">
+    <small class="cyan">EMPIRE EXCHANGE</small>
+    <h2>STOCK MARKET</h2>
+  </div>
+
+  <div class="stock-ticker" id="ticker"></div>
+
+  <div class="trade-box">
+
+    <div class="trade-input">
+      <label>TICKER</label>
+      <input id="tickerInput" placeholder="NOVA">
+    </div>
+
+    <div class="trade-input">
+      <label>SHARES</label>
+      <input id="sharesInput" type="number" value="1" min="1">
+    </div>
+
+    <button onclick="buyStock()">BUY</button>
+    <button class="sell" onclick="sellStock()">SELL</button>
+
+  </div>
+
+  <div class="card">
+    <h3>YOUR PORTFOLIO</h3>
+    <div id="portfolio"></div>
+  </div>
+
+</section>
+
+<!-- BANK -->
+
+<section id="bank" class="page">
+
+  <div class="title">
+    <small class="cyan">FINANCIAL CENTER</small>
+    <h2>BANK</h2>
+  </div>
+
+  <div class="bank-grid">
+
+    <div class="card">
+      <h3>BUSINESS LOAN</h3>
+
+      <div class="loan-number" id="loanAmount">$0</div>
+
+      <div class="loan-row">
+        <span>Interest</span>
+        <b>8%</b>
+      </div>
+
+      <div class="loan-row">
+        <span>Days remaining</span>
+        <b id="loanDays">--</b>
+      </div>
+
+      <div class="loan-row">
+        <span>Status</span>
+        <b id="loanStatus">NO LOAN</b>
+      </div>
+
+      <button onclick="takeLoan(10000)">BORROW $10,000</button>
+      <button onclick="takeLoan(25000)">BORROW $25,000</button>
+      <button class="danger-btn" onclick="repayLoan()">REPAY $5,000</button>
+    </div>
+
+    <div class="card">
+      <h3>FINANCIAL HEALTH</h3>
+
+      <div class="health-circle">
+        <span id="health">100%</span>
+      </div>
+
+      <p id="healthText">Your company is financially healthy.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- TEAM -->
+
+<section id="employees" class="page">
+
+  <div class="title">
+    <small class="cyan">HUMAN RESOURCES</small>
+    <h2>YOUR TEAM</h2>
+  </div>
+
+  <div class="employee-grid">
+
+    <div class="employee">
+      <span>👨‍💼</span>
+      <h3>Sales Director</h3>
+      <p>Increases revenue.</p>
+      <button onclick="hire('sales')">HIRE $1,000</button>
+    </div>
+
+    <div class="employee">
+      <span>👩‍💻</span>
+      <h3>Engineer</h3>
+      <p>Improves productivity.</p>
+      <button onclick="hire('engineer')">HIRE $1,200</button>
+    </div>
+
+    <div class="employee">
+      <span>🧑‍💼</span>
+      <h3>Executive</h3>
+      <p>Improves company performance.</p>
+      <button onclick="hire('executive')">HIRE $2,000</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h3>ACTIVE EMPLOYEES</h3>
+    <div id="team"></div>
+  </div>
+
+</section>
+
+<!-- MARKET -->
+
+<section id="market" class="page">
+
+  <div class="title">
+    <small class="cyan">GLOBAL ECONOMY</small>
+    <h2>MARKET</h2>
+  </div>
+
+  <div class="market-card">
+
+    <div class="market-number" id="marketIndex">100</div>
+    <div id="marketState">STABLE MARKET</div>
+
+    <div class="graph">
+      <div id="graphLine"></div>
+    </div>
+
+    <div class="market-stats">
+      <div>
+        <small>DEMAND</small>
+        <b id="demand">100%</b>
+      </div>
+
+      <div>
+        <small>VOLATILITY</small>
+        <b id="volatility">LOW</b>
+      </div>
+
+      <div>
+        <small>CONFIDENCE</small>
+        <b id="confidence">50%</b>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+</div>
+
+<!-- SETTINGS -->
+
+<div id="settings" class="modal hidden">
+
+  <div class="settings-box">
+
+    <button class="close" onclick="closeSettings()">×</button>
+
+    <small class="cyan">SYSTEM</small>
+    <h2>SETTINGS</h2>
+
+    <div class="setting-row">
+      <span>Sound</span>
+      <button onclick="toggleSound()" id="soundBtn">ON</button>
+    </div>
+
+    <div class="setting-row">
+      <span>Game Speed</span>
+      <select id="gameSpeed">
+        <option value="1">Normal</option>
+        <option value="2">Fast</option>
+      </select>
+    </div>
+
+    <hr>
+
+    <h3 class="danger-text">RESET ACCOUNT</h3>
+
+    <p>
+      This permanently deletes your company,
+      money, employees, stocks, upgrades and progress.
+    </p>
+
+    <button class="reset-btn" onclick="resetAccount()">
+      ⚠ RESET EVERYTHING
+    </button>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
